@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Project1_Counting_Character_Frequencies
 {
@@ -23,14 +25,22 @@ namespace Project1_Counting_Character_Frequencies
 
         }
 
-        
+
 
         private void btn_open_Click(object sender, EventArgs e)
         {
             StreamReader inStream = null;
             string line;
             Dictionary<string, int> wordList = new Dictionary<string,int> {};
-            int wordsize=0;
+            int longestsize=0;
+            int[] letter_freq = new int[26];
+            for (int i = 0; i < 26; i++)
+            {
+               letter_freq[i] = 0;
+            }
+           // int intvale = 'a';
+            
+ 
          
 
             OpenFileDialog openFileDiag = new OpenFileDialog();
@@ -43,9 +53,7 @@ namespace Project1_Counting_Character_Frequencies
 
             if (openFileDiag.ShowDialog() == DialogResult.OK)
             {
-                txt_filepath.Text = openFileDiag.FileName;
-                
-
+                txt_filepath.Text = openFileDiag.FileName;              
                 try
                 {
                     if ((inStream = File.OpenText(openFileDiag.FileName)) != null)
@@ -56,7 +64,9 @@ namespace Project1_Counting_Character_Frequencies
                             {
                                 if (line != string.Empty) // if line not empty
                                 {
-                                    //https://msdn.microsoft.com/en-us/library/bb383973.aspx
+                                    line = line.ToLower();
+                                    // replace all non-alphabetic and space with empty
+                                    line = Regex.Replace(line, @"[^a-z ]", ""); 
 
                                     // read each word from each sentence and put it into array
                                     string[] words = line.Split(' ');
@@ -64,10 +74,6 @@ namespace Project1_Counting_Character_Frequencies
                                     // check if the word is already in the dictionary or not
                                     foreach (string word in words)
                                     {
-                                        if (word.Length > wordsize)
-                                        {
-                                            wordsize = word.Length;
-                                        }
                                         if (wordList.ContainsKey(word))
                                         {
                                             wordList[word]++; // if yes, then increase it value by 1
@@ -76,19 +82,19 @@ namespace Project1_Counting_Character_Frequencies
                                         {
                                             wordList.Add(word, 1);// if not, add that word into the dictionary
                                         }
-                                    }
 
-                                    //foreach (var word in line)
-                                    //{
-                                    //    if (wordList.ContainsKey(word.ToString()))
-                                    //    {
-                                    //        wordList[word.ToString()]++;
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        wordList.Add(word.ToString(),1);
-                                    //    }
-                                    //}//end foreach
+                                        // update longest word length
+                                        if (word.Length > longestsize)
+                                        {
+                                            longestsize = word.Length; 
+                                        }
+
+
+                                        foreach (char c in word)
+                                        {
+                                            letter_freq[c - 97]++;
+                                        }
+                                    }
                                     
 
                                 }// end if
@@ -106,20 +112,33 @@ namespace Project1_Counting_Character_Frequencies
             }//end if
 
             string str = "";
-
+            // prinf longest words
             foreach (var temp in wordList)
             {
-                if (temp.Key.ToString().Length == wordsize)
+                if (temp.Key.ToString().Length == longestsize)
                 {
                     str += " " + temp.Key.ToString();
                 }
                 
-            }
+            }// end foreach
             
 
             label1.Text = wordList["the"].ToString() + "   " + wordList["principles"].ToString();
-            //label2.Text = wordList["t"].ToString();
             label2.Text = str;
+
+            string str1 = "";
+
+            int unicode = 97;
+            
+
+            for (int i = 0; i < 26; i++)
+            {
+                //str1 += " " + letter_freq[i].ToString();
+                char c = (char)(unicode + i);
+                Series series = chart_letter.Series.Add(c.ToString());
+                series.Points.Add(letter_freq[i]);
+            }
+            //label2.Text = str1;
 
         }// end btn_open click
     }

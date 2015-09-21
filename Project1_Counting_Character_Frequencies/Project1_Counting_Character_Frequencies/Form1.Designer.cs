@@ -28,11 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.txt_filepath = new System.Windows.Forms.TextBox();
             this.btn_open = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.chart_letter = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_letter)).BeginInit();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -74,11 +78,24 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "label2";
             // 
+            // chart_letter
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart_letter.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart_letter.Legends.Add(legend1);
+            this.chart_letter.Location = new System.Drawing.Point(38, 225);
+            this.chart_letter.Name = "chart_letter";
+            this.chart_letter.Size = new System.Drawing.Size(652, 300);
+            this.chart_letter.TabIndex = 4;
+            this.chart_letter.Text = "chart1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(527, 465);
+            this.ClientSize = new System.Drawing.Size(702, 559);
+            this.Controls.Add(this.chart_letter);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_open);
@@ -86,6 +103,7 @@
             this.Name = "Form1";
             this.Text = "Counting Character Frequencies ";
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.chart_letter)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,6 +116,7 @@
         private System.Windows.Forms.Button btn_open;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_letter;
     }
 }
 
