@@ -22,10 +22,10 @@ namespace Project1_Counting_Character_Frequencies
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            label1.Text = "";
+            label2.Text = "";
+            label3.Text = "";
         }
-
-
 
         private void btn_open_Click(object sender, EventArgs e)
         {
@@ -38,10 +38,6 @@ namespace Project1_Counting_Character_Frequencies
             {
                letter_freq[i] = 0;
             }
-           // int intvale = 'a';
-            
- 
-         
 
             OpenFileDialog openFileDiag = new OpenFileDialog();
             openFileDiag.InitialDirectory = @"C:\";
@@ -50,7 +46,6 @@ namespace Project1_Counting_Character_Frequencies
             openFileDiag.CheckPathExists = true;
             openFileDiag.Filter="text file (*.txt)|*.txt";
             
-
             if (openFileDiag.ShowDialog() == DialogResult.OK)
             {
                 txt_filepath.Text = openFileDiag.FileName;              
@@ -82,20 +77,17 @@ namespace Project1_Counting_Character_Frequencies
                                         {
                                             wordList.Add(word, 1);// if not, add that word into the dictionary
                                         }
-
                                         // update longest word length
                                         if (word.Length > longestsize)
                                         {
                                             longestsize = word.Length; 
                                         }
 
-
                                         foreach (char c in word)
                                         {
                                             letter_freq[c - 97]++;
                                         }
-                                    }
-                                    
+                                    }                                    
 
                                 }// end if
 
@@ -103,7 +95,6 @@ namespace Project1_Counting_Character_Frequencies
 
                         }//end using
                     }//end if
-
                 }
                 catch (Exception ex)
                 {
@@ -117,29 +108,29 @@ namespace Project1_Counting_Character_Frequencies
             {
                 if (temp.Key.ToString().Length == longestsize)
                 {
-                    str += " " + temp.Key.ToString();
+                    str += "\n        " + temp.Key.ToString() ;
                 }
                 
-            }// end foreach
-            
+            }// end foreach           
 
-            label1.Text = wordList["the"].ToString() + "   " + wordList["principles"].ToString();
-            label2.Text = str;
-
-            string str1 = "";
+            label1.Text = "The word “the” appears in the play "+ wordList["the"].ToString() + " times";
+            label2.Text = "The word “principles” appears in the play " + wordList["principles"].ToString() + " times";
+            label3.Text = "The longest word/words in this article: " + str;
 
             int unicode = 97;
-            
+            //convert to %
+            int sum = 0;
+            for (int i = 0; i < 26;i++ )
+            {
+                sum += letter_freq[i];
+            }
 
             for (int i = 0; i < 26; i++)
-            {
-                //str1 += " " + letter_freq[i].ToString();
+            {                
                 char c = (char)(unicode + i);
                 Series series = chart_letter.Series.Add(c.ToString());
-                series.Points.Add(letter_freq[i]);
-            }
-            //label2.Text = str1;
-
+                series.Points.Add(letter_freq[i]*100.0/sum);
+            }           
         }// end btn_open click
     }
 }
